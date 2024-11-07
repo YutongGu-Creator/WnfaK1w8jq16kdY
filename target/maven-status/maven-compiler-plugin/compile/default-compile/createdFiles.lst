@@ -1,0 +1,6 @@
+org/example/weathersensor/data/SensorDataRepository.class
+org/example/weathersensor/controller/GlobalExceptionHandler.class
+org/example/weathersensor/controller/SensorController.class
+org/example/weathersensor/data/SensorData.class
+org/example/weathersensor/WeatherSensorApplication.class
+org/example/weathersensor/service/SensorDataService.class
