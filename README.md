@@ -40,9 +40,8 @@ The Weather Sensor Application is a Spring Boot application designed to collect,
         - `sensorId`: ID of the sensor.
         - `metrics`: List of metrics to retrieve (e.g., temperature, humidity, windspeed).
         - `statistic`: Type of statistic to calculate (e.g., min, max, sum) (default to average).
-        - `startDate`: Start date of the range (optional).
-        - `endDate`: End date of the range (optional).
-example use: 
+        - `startDate`: (optional) Start date of the range.
+        - `endDate`: (optional) End date of the range.
 
 ### Example Request
 
