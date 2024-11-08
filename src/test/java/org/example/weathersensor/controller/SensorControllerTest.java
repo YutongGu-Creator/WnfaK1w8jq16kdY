@@ -50,7 +50,31 @@ class SensorControllerTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldSuccessfullyGetData() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
+        var metrics = Arrays.asList("temperature", "humidity", "windspeed");
+        var statistic = "average";
+        var startDate = new Date();
+        var endDate = new Date();
+
+        var expectedResult = new HashMap<>();
+        expectedResult.put("temperature", 10.7);
+
+        when(sensorDataService.getMetrics(eq(sensorId), eq(metrics), eq(statistic),
+                any(Optional.class), any(Optional.class)))
+                .thenReturn(expectedResult);
+
+        var response = sensorController.getMetrics(sensorId, metrics, statistic, startDate, endDate);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(expectedResult, response.getBody());
+        verify(sensorDataService, times(1)).getMetrics(eq(sensorId), eq(metrics),
+                eq(statistic), any(Optional.class), any(Optional.class));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldSuccessfullyGetDataForTwoSensors() {
+        var sensorId = List.of("sensor1", "sensor2");
         var metrics = Arrays.asList("temperature", "humidity", "windspeed");
         var statistic = "average";
         var startDate = new Date();
@@ -74,7 +98,7 @@ class SensorControllerTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldSuccessfullyGetDataWithoutDates() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = Collections.singletonList("temperature");
         var statistic = "average";
 
@@ -97,7 +121,7 @@ class SensorControllerTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldSuccessfullyGetDataWithoutEndDate() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = Collections.singletonList("temperature");
         var statistic = "average";
         var startDate = new Date(new Date().getTime() - 48 * 60 * 60 * 1000);
@@ -121,7 +145,7 @@ class SensorControllerTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldThrowExceptionWithoutStartDate() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = Collections.singletonList("temperature");
         var statistic = "average";
         var endDate = new Date();
@@ -141,7 +165,7 @@ class SensorControllerTest {
     @Test
     @SuppressWarnings("unchecked")
     void shouldThrowIllegalArgumentException() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = Collections.singletonList("invalidMetric");
         var statistic = "average";
         var startDate = new Date();

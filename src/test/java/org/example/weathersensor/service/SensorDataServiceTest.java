@@ -36,7 +36,7 @@ class SensorDataServiceTest {
 
     @Test
     void shouldReturnDefaultMetricsWhenDatesAreNull() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = List.of("temperature", "humidity", "windspeed");
         var statistic = "average";
         Optional<Date> startDate = Optional.empty();
@@ -56,12 +56,12 @@ class SensorDataServiceTest {
 
     @Test
     void shouldReturnMetricsForGivenDateRange() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = List.of("temperature", "humidity", "windspeed");
         var statistic = "average";
         var endDate = new Date();
         var startDate = new Date(endDate.getTime() - 48 * 60 * 60 * 1000);
-        List<SensorData> data = populateSensorData(sensorId);
+        List<SensorData> data = populateSensorData(sensorId.get(0));
 
         when(repository.findBySensorIdAndTimestampBetween(anyString(), any(Date.class), any(Date.class))).thenReturn(data);
 
@@ -103,7 +103,7 @@ class SensorDataServiceTest {
 
     @Test
     void shouldThrowExceptionWhenStartDateIsInFuture() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = List.of("temperature", "humidity", "windspeed");
         var statistic = "average";
         var endDate = new Date();
@@ -116,7 +116,7 @@ class SensorDataServiceTest {
 
     @Test
     void shouldThrowExceptionWhenStartDateIsAfterEndDate() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = List.of("temperature", "humidity", "windspeed");
         var statistic = "average";
         var startDate = new Date();
@@ -129,7 +129,7 @@ class SensorDataServiceTest {
 
     @Test
     void shouldThrowExceptionWhenDateRangeExceedsOneMonth() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = List.of("temperature", "humidity", "windspeed");
         var statistic = "average";
         var endDate = new Date();
@@ -142,13 +142,13 @@ class SensorDataServiceTest {
 
     @Test
     void shouldThrowExceptionWhenInvalidMetric() {
-        var sensorId = "sensor1";
+        var sensorId = List.of("sensor1");
         var metrics = List.of("invalidMetric");
         var statistic = "average";
         Optional<Date> startDate = Optional.empty();
         Optional<Date> endDate = Optional.empty();
 
-        List<SensorData> data = populateSensorData(sensorId);
+        List<SensorData> data = populateSensorData(sensorId.get(0));
         when(repository.findBySensorIdAndTimestampBetween(anyString(), any(Date.class), any(Date.class))).thenReturn(data);
 
         var exception = assertThrows(IllegalArgumentException.class, () -> service.getMetrics(sensorId, metrics, statistic, startDate, endDate));

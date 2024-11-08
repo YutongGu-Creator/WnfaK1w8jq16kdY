@@ -22,14 +22,16 @@ public class SensorDataService {
         return repository.save(data);
     }
 
-    public Map<String, Double> getMetrics(String sensorId, List<String> metrics, String statistic, Optional<Date> startDate, Optional<Date> endDate) {
+    public Map<String, Double> getMetrics(List<String> sensorId, List<String> metrics, String statistic, Optional<Date> startDate, Optional<Date> endDate) {
         var end = endDate.orElse(new Date()); // Use current date as end date if none present
         var start = startDate.orElse(new Date(end.getTime() - 24 * 60 * 60 * 1000)); // 24hr before end date
 
         validateDateRange(start, end);
 
-        var data = repository.findBySensorIdAndTimestampBetween(
-                sensorId, start, end);
+        List<SensorData> data = new ArrayList<>();
+        for (String id : sensorId) {
+            data.addAll(repository.findBySensorIdAndTimestampBetween(id, start, end));
+        }
 
         Map<String, Double> result = new HashMap<>();
 

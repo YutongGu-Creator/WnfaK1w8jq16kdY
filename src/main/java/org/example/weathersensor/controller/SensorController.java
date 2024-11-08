@@ -27,7 +27,7 @@ public class SensorController {
 
     @GetMapping("/metrics")
     public ResponseEntity<Map<String, Double>> getMetrics(
-            @RequestParam String sensorId,
+            @RequestParam List<String> sensorId,
             @RequestParam List<String> metrics,
             @RequestParam(defaultValue = "average") String statistic,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDate,
